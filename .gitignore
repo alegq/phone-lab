@@ -1,0 +1,30 @@
+# Local mesh IPs — never commit
+mesh.env
+mesh.secrets.env
+mesh.marketing.env
+mesh.content.env
+
+# Deploy artifacts
+agents-prod.tgz
+gateway-prod.tgz
+auth-prod.tgz
+marketing-prod.tgz
+staging/
+
+# Logs
+logs/
+*.log
+
+# Cloudflare Tunnel local config (never commit credentials paths)
+cloudflared/
+
+# Dependencies (added in phases 1–2)
+node_modules/
+packages/*/node_modules/
+
+# Env files with device-specific values
+packages/*/.env
+
+# OS
+.DS_Store
+Thumbs.db

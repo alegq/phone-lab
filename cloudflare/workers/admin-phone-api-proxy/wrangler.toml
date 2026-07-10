@@ -1,0 +1,13 @@
+name = "admin-phone-api-proxy"
+main = "src/index.js"
+compatibility_date = "2026-07-08"
+
+# Account that owns the `bufsa.com` zone.
+account_id = "26c286fa82a9da8ce39ab8f62c80dfe1"
+
+# Routes the Pages domain `/api/*` to this Worker, which then proxies to the
+# tunnel hostname `api.admin-phone.bufsa.com`.
+routes = [
+  { pattern = "admin-phone.bufsa.com/api/*", zone_name = "bufsa.com" }
+]
+

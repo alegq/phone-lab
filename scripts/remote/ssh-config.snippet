@@ -1,0 +1,16 @@
+# Add to ~/.ssh/config on dev PC (merge manually).
+# Requires: python scripts/remote/setup_ssh_keys.py
+
+Host phone-a phone-a-gateway
+  HostName 100.120.187.10
+  Port 8022
+  User u0_a360
+  IdentityFile ~/.ssh/phone-lab
+  StrictHostKeyChecking accept-new
+
+Host phone-b phone-b-agents
+  HostName 100.103.183.36
+  Port 8022
+  User u0_a138
+  IdentityFile ~/.ssh/phone-lab
+  StrictHostKeyChecking accept-new

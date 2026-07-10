@@ -1,0 +1,7 @@
+name = "admin-phone-api-proxy"
+main = "src/index.js"
+compatibility_date = "2026-07-08"
+
+# Deploy then add route:
+#   admin-phone.bufsa.com/api/*
+

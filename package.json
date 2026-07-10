@@ -1,0 +1,33 @@
+{
+  "name": "phone-lab",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Phone Lab — prod microservices on Android phones via Tailscale",
+  "scripts": {
+    "verify:mesh": "node scripts/verify-mesh.mjs",
+    "smoke": "node scripts/smoke-mesh.mjs",
+    "smoke:phase7": "node scripts/smoke-phase7.mjs",
+    "smoke:content": "node scripts/smoke-content.mjs",
+    "smoke:phase8": "node scripts/smoke-phase8.mjs",
+    "smoke:phase10": "node scripts/smoke-phase10.mjs",
+    "smoke:gateway-prod": "node scripts/smoke-gateway-prod.mjs",
+    "smoke:public": "node scripts/smoke-public-domain.mjs",
+    "smoke:phase11": "node scripts/smoke-phase11.mjs",
+    "smoke:phase12": "node scripts/smoke-phase12.mjs",
+    "smoke:phase13": "node scripts/smoke-phase13.mjs",
+    "preflight:gemini": "node scripts/preflight-gemini-phone-b.mjs",
+    "deploy:phone-b-phase10": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/deploy-phone-b-phase10.ps1",
+    "deploy:phone-b-phase11": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/deploy-phone-b-phase11.ps1",
+    "deploy:phase12": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/deploy-phase12.ps1",
+    "deploy:phase13": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/deploy-phase13.ps1",
+    "deploy:watchdog": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/deploy-watchdog.ps1",
+    "smoke:watchdog": "node scripts/smoke-watchdog.mjs",
+    "migrate:content-db": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/migrate-content-db.ps1",
+    "demo:preflight": "node scripts/demo-preflight.mjs",
+    "remote:setup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-phone-ssh.ps1",
+    "setup:phone-b-rabbit": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-phone-b-proot.ps1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

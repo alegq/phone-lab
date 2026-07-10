@@ -24,7 +24,9 @@ $WatchdogFiles = @(
     @{ Local = "phone-b\watch-stack-phone-b.sh"; RemoteDir = "phone-b" },
     @{ Local = "phone-b\install-watchdog-cron.sh"; RemoteDir = "phone-b" },
     @{ Local = "phone-a\watch-stack-phone-a.sh"; RemoteDir = "phone-a" },
-    @{ Local = "phone-a\install-watchdog-cron.sh"; RemoteDir = "phone-a" }
+    @{ Local = "phone-a\install-watchdog-cron.sh"; RemoteDir = "phone-a" },
+    @{ Local = "phone-a\openclaw-env.sh"; RemoteDir = "phone-a" },
+    @{ Local = "phone-a\restart-openclaw-phone-a.sh"; RemoteDir = "phone-a" }
 )
 
 Write-Host "Normalizing .sh line endings (LF)..."

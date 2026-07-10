@@ -15,8 +15,11 @@ if [ ! -d "$STACK_DIR" ]; then
   exit 1
 fi
 
-sleep 30
+sleep "${PHONE_LAB_BOOT_SLEEP:-30}"
 
+pkill -f "packages/api-agents-mob" 2>/dev/null || true
+pkill -f "api-agents-mob" 2>/dev/null || true
+pkill -f "api-content-mob" 2>/dev/null || true
 fuser -k 4010/tcp 2>/dev/null || true
 fuser -k 4004/tcp 2>/dev/null || true
 fuser -k 4001/tcp 2>/dev/null || true
@@ -50,11 +53,11 @@ sleep 2
 bash "$STACK_DIR/start-agents-prod.sh"
 sleep 2
 if [ -d "$AUTH_DIR" ]; then
-  bash "$AUTH_DIR/start-auth-prod.sh" || true
+  bash "$AUTH_DIR/restart-auth-prod.sh" || true
 fi
 sleep 2
 if [ -d "$MKT_DIR" ]; then
-  bash "$MKT_DIR/start-marketing-prod.sh" || true
+  bash "$MKT_DIR/restart-marketing-prod.sh" || true
 fi
 
 echo "$(date -Iseconds) boot-stack-phone-b: done" >> "$LOG_DIR/boot-stack-phone-b.log"

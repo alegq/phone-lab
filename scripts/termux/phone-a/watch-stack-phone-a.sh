@@ -10,13 +10,7 @@ fi
 # shellcheck disable=SC1091
 source "$WD_LIB"
 
-LOCK_FILE="$HOME/phone-lab/data/watchdog.lock"
-exec 9>"$LOCK_FILE"
-if ! flock -n 9; then
-  wd_log "skip phone-a (another watchdog run in progress)"
-  exit 0
-fi
-
+# Cron already wraps this script with flock on watchdog.lock — do not flock again here.
 GW_DIR="$HOME/phone-lab/packages/api-gateway-prod/scripts/termux/phone-a"
 CONTENT_SCRIPTS="$HOME/phone-lab/packages/api-content-prod/scripts/termux/phone-b"
 MKT_DIR="$HOME/phone-lab/packages/api-marketing-prod/scripts/termux/phone-b"
@@ -50,6 +44,13 @@ if wd_pkg_exists "api-content-prod" && [ -d "$CONTENT_SCRIPTS" ]; then
   wd_ensure_or_restart "content" \
     "wd_check_http 'http://127.0.0.1:4004/public/api/content/health/live'" \
     "bash '$CONTENT_SCRIPTS/restart-content-prod.sh'" || FAILURES=$((FAILURES + 1))
+fi
+
+OC_RESTART="$HOME/phone-lab/scripts/termux/phone-a/restart-openclaw-phone-a.sh"
+if [ -f "$HOME/phone-lab/.openclaw-installed" ] && [ -f "$OC_RESTART" ]; then
+  wd_ensure_or_restart "openclaw" \
+    "wd_check_http 'http://127.0.0.1:18789/health'" \
+    "bash '$OC_RESTART'" || FAILURES=$((FAILURES + 1))
 fi
 
 if wd_marketing_on_phone "phone-a" && [ -d "$MKT_DIR" ]; then

@@ -10,12 +10,7 @@ fi
 # shellcheck disable=SC1091
 source "$WD_LIB"
 
-LOCK_FILE="$HOME/phone-lab/data/watchdog.lock"
-exec 9>"$LOCK_FILE"
-if ! flock -n 9; then
-  wd_log "skip phone-b (another watchdog run in progress)"
-  exit 0
-fi
+# Cron already wraps this script with flock on watchdog.lock — do not flock again here.
 
 STACK_DIR="$HOME/phone-lab/packages/api-agents-prod/scripts/termux/phone-b"
 AUTH_DIR="$HOME/phone-lab/packages/api-auth-prod/scripts/termux/phone-b"

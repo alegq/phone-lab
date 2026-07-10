@@ -13,6 +13,7 @@ import {
   loadMeshEnv,
   agentsUrlFromMesh,
   gatewayUrlFromMesh,
+  isOpenclawEnabled,
 } from './lib/mesh-env.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -56,6 +57,15 @@ async function main() {
     console.error('  phone-b: bash ~/.termux/boot/start-phone-b-stack.sh');
     console.error('  phone-a: bash ~/phone-lab/scripts/termux/phone-a/boot-gateway-phone-a.sh');
     process.exit(1);
+  }
+
+  if (isOpenclawEnabled(ROOT)) {
+    console.log('\n--- Step 3: OpenClaw (phase 14) ---');
+    const ocOk = await runNpmScript('smoke:phase14');
+    if (!ocOk) {
+      console.error('\nFAIL  mesh preflight — smoke:phase14 failed');
+      process.exit(1);
+    }
   }
 
   console.log('\n--- Ready ---');

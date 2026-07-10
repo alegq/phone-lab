@@ -173,6 +173,14 @@ wd_content_on_phone_b() {
 wd_phone_a_pgdata() {
   local marketing_pg="$HOME/phone-lab/data/postgres-marketing"
   local content_pg="$HOME/phone-lab/data/postgres-content"
+  if [ -f "$HOME/phone-lab/mesh.content.env" ]; then
+    # shellcheck disable=SC1091
+    source "$HOME/phone-lab/mesh.content.env"
+    if [ "${CONTENT_PHONE:-phone-b}" = "phone-a" ] && [ -d "$content_pg" ]; then
+      echo "$content_pg"
+      return
+    fi
+  fi
   if [ -d "$marketing_pg" ]; then
     echo "$marketing_pg"
   elif [ -d "$content_pg" ]; then

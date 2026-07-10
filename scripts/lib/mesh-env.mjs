@@ -191,3 +191,64 @@ export function resolveInternalToken(root, envOverride) {
   if (secrets.INTERNAL_SERVICE_TOKEN) return secrets.INTERNAL_SERVICE_TOKEN;
   return 'phone-lab-internal-token';
 }
+
+/**
+ * Load mesh.openclaw.env (OpenClaw smoke/deploy routing).
+ * @param {string} root
+ * @returns {Record<string, string>}
+ */
+export function loadMeshOpenclaw(root) {
+  const path = join(root, 'mesh.openclaw.env');
+  if (!existsSync(path)) {
+    return {};
+  }
+
+  const vars = {};
+  const content = readFileSync(path, 'utf8');
+  for (const line of content.split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eq = trimmed.indexOf('=');
+    if (eq === -1) continue;
+    vars[trimmed.slice(0, eq).trim()] = trimmed.slice(eq + 1).trim();
+  }
+  return vars;
+}
+
+/**
+ * @param {string} root
+ * @returns {boolean}
+ */
+export function isOpenclawEnabled(root) {
+  const cfg = loadMeshOpenclaw(root);
+  return cfg.OPENCLAW_ENABLED === '1' || process.env.OPENCLAW_ENABLED === '1';
+}
+
+/**
+ * @param {Record<string, string>} mesh
+ * @param {Record<string, string>} openclaw
+ * @returns {string|null}
+ */
+export function openclawUrlFromMesh(mesh, openclaw) {
+  if (openclaw.OPENCLAW_SSH_TUNNEL === '1') {
+    const port = openclaw.OPENCLAW_LOCAL_PORT || openclaw.OPENCLAW_PORT || '18789';
+    return `http://127.0.0.1:${port}`;
+  }
+  const ip = openclaw.OPENCLAW_PHONE_A_IP || mesh.PHONE_A_IP;
+  const port = openclaw.OPENCLAW_PORT || '18789';
+  return ip ? `http://${ip}:${port}` : null;
+}
+
+/**
+ * Resolve OpenClaw URL from env override, mesh.openclaw.env, or mesh.env.
+ * @param {string} root
+ * @param {string} [envOverride]
+ * @param {string} [fallback]
+ */
+export function resolveOpenclawUrl(root, envOverride, fallback = 'http://127.0.0.1:18789') {
+  const fromEnv = envOverride?.replace(/\/$/, '');
+  if (fromEnv) return fromEnv;
+  const mesh = loadMeshEnv(root);
+  const openclaw = loadMeshOpenclaw(root);
+  return (openclawUrlFromMesh(mesh, openclaw) || fallback).replace(/\/$/, '');
+}

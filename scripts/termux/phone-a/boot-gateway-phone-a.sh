@@ -12,7 +12,7 @@ if [ ! -d "$STACK_DIR" ]; then
   exit 1
 fi
 
-sleep 30
+sleep "${PHONE_LAB_BOOT_SLEEP:-30}"
 
 fuser -k 4000/tcp 2>/dev/null || true
 sleep 3

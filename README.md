@@ -30,6 +30,7 @@ npm run smoke:phase7       # phone-b agents workflow
 npm run smoke:phase8       # content bridge + agents
 npm run smoke:phase10      # live Gemini smoke-full
 npm run smoke:phase13      # content-prod regression
+npm run smoke:phase14      # OpenClaw gateway + factory regression
 npm run preflight:gemini
 ```
 
@@ -44,6 +45,7 @@ npm run preflight:gemini
 | 11 | api-auth + admin JWT | [PHASE-11-DEPLOY.md](docs/PHASE-11-DEPLOY.md) |
 | 12 | api-marketing | [PHASE-12-DEPLOY.md](docs/PHASE-12-DEPLOY.md) |
 | 13 | api-content-prod | [PHASE-13-DEPLOY.md](docs/PHASE-13-DEPLOY.md) |
+| 14 | OpenClaw lab (server + phone-a) | [PHASE-14-DEPLOY.md](docs/PHASE-14-DEPLOY.md) · [OPENCLAW-LAB.md](docs/OPENCLAW-LAB.md) |
 | — | **Pull-deploy** (api-agents, opt-in) | [PULL-DEPLOY.md](docs/PULL-DEPLOY.md) |
 
 ### Common deploy commands
@@ -55,6 +57,7 @@ npm run deploy:phase12
 npm run deploy:phase13
 npm run deploy:phone-b-phase10   # live Gemini on phone-b
 npm run deploy:pull-deploy       # pull-deploy scripts to phone-b (opt-in)
+npm run deploy:phase14           # OpenClaw scripts to phone-a
 npm run setup:phone-b-rabbit     # RabbitMQ in proot Debian
 ```
 
@@ -64,6 +67,7 @@ npm run setup:phone-b-rabbit     # RabbitMQ in proot Debian
 |--------|-------------|-----|
 | phone-a | `boot-gateway-phone-a.sh` | `gateway-prod.log` |
 | phone-a | `start-content-phone-a.sh` | `content-prod.log` |
+| phone-a | `boot-openclaw-phone-a.sh` | `openclaw-phone-a.log` |
 | phone-b | `boot-stack-phone-b.sh` | `boot-stack-phone-b.log` |
 
 Logs: `~/phone-lab/logs/`

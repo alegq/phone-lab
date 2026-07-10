@@ -41,6 +41,26 @@ Copy-Item $EnvExample (Join-Path $Staging ".env.example")
 Copy-Item (Join-Path $PhoneLabRoot "config\agents-prod.phone-b.env.*.example") (Join-Path $Staging "config")
 Copy-Item "$TermuxScripts\*" (Join-Path $Staging "scripts\termux\phone-b")
 
+$GitSha = ""
+Push-Location $AgentsRoot
+try {
+    $GitSha = (git rev-parse HEAD 2>$null)
+    if ($LASTEXITCODE -ne 0) { $GitSha = "" }
+} finally {
+    Pop-Location
+}
+$ShortSha = if ($GitSha.Length -ge 7) { $GitSha.Substring(0, 7) } else { "unknown" }
+$BuiltAt = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+$ReleaseMeta = @(
+    "SERVICE=api-agents-prod",
+    "SHA=$GitSha",
+    "SHORT_SHA=$ShortSha",
+    "BUILT_AT=$BuiltAt",
+    "SOURCE=manual"
+)
+$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+[System.IO.File]::WriteAllLines((Join-Path $Staging ".phone-lab-release"), $ReleaseMeta, $utf8NoBom)
+
 Write-Host "Normalizing .sh line endings (LF)..."
 Convert-ShFilesToLf -Directory $Staging
 
